@@ -1,0 +1,349 @@
+% Copyright 2009 by Tomasz Mazur
+%
+% This file may be distributed and/or modified in all ways.
+
+%\documentclass[xcolor=pdftex,t,11pt]{beamer}
+\documentclass[xcolor=pdftex,t,11pt,handout]{beamer}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       SET OPTIONS BELOW        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[icelandic, english]{babel}
+\usepackage{t1enc} 
+\usepackage{textcomp}
+\usepackage[
+% Toggle showing page counter
+pagecounter=true,
+%
+% String to be used between the current page and the
+% total page count, e.g. of, /, from, etc.
+pageofpages=of,
+%
+% Defines the shape of bullet points. Available options: circle, square
+bullet=circle,
+%
+% Show a line below the frame title. 
+titleline=true,
+%
+% Set the style of the title page (true for fancy, false for standard)
+alternativetitlepage=true,
+%
+% Institution logo for fancy title page.
+% Comment out to remove the logo from the title page.
+% IMPORTANT: THERE IS A BUG IN SOME VERSIONS OF PDFLATEX AND FONTS
+% ON THE LOGOS ARE NOT RENDERED PROPERLY. IN SUCH A CASE ADD `2` 
+% TO THE NAME OF THE LOGO, E.G. comlab2 INSTEAD OF comlab
+titlepagelogo=../hilogo,
+%
+% Department footer logo for fancy title page
+% Comment out to remove the logo from the footer of the title page/
+% IMPORTANT: THERE IS A BUG IN SOME VERSIONS OF PDFLATEX AND FONTS
+% ON THE LOGOS ARE NOT RENDERED PROPERLY. IN SUCH A CASE ADD `2` 
+% TO THE NAME OF THE LOGO, E.G. comlab2 INSTEAD OF comlab
+%titlepagefooterlogo=images/titlepage/comlab,
+%
+% Institution/department logo for ordinary slides
+% Comment this line out to remove the logo from all the pages.
+% Available logos are: ou, comlab, comlabinline, comlabou
+% IMPORTANT: THERE IS A BUG IN SOME VERSIONS OF PDFLATEX AND FONTS
+% ON THE LOGOS ARE NOT RENDERED PROPERLY. IN SUCH A CASE ADD `2` 
+% TO THE NAME OF THE LOGO, E.G. comlab2 INSTEAD OF comlab
+ordinarypageslogo=../hilogoname,
+%
+%
+% Add watermark in the bottom right corner
+%watermark=<filename>,
+%
+% Set the height of the watermark.
+%watermarkheight=100pt,
+%
+% The watermark image is 4 times bigger than watermarkheight.
+%watermarkheightmult=4,
+]{../beamerthemeTorino} 
+
+% Select color theme. Available options are:
+% mininmal, greenandblue, blue, red
+\usepackage{../beamercolorthemehi}
+
+%Select different font themes.Available options are:
+% default, serif, structurebold, structureitalicserif, structuresmallcapsserif
+\usefonttheme{structurebold}
+
+\setbeamercovered{transparent}
+
+%\usepackage{epsfig}
+%\usepackage{subfigure}
+%\usepackage{calc}
+%\usepackage{amssymb}
+%\usepackage{amstext}
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{multicol}
+%\usepackage{pslatex}
+%\usepackage{apalike}
+%\usepackage{SCITEPRESS}
+%\usepackage[small]{caption}
+\usepackage{booktabs}
+
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\usepackage{url}
+\usepackage{subfigure}
+% Use graphicx for including graphics
+%\usepackage[dvips]{graphicx,psfrag}
+\usepackage{graphicx}
+\usepackage{paralist}
+
+\usepackage{natbib} %citep and citet
+%\bibpunct[:]{(}{)}{;}{a}{}{,}
+%\renewcommand{\bibsection}{\subsubsection*{\bibname } }
+
+\usepackage[inline]{enumitem}
+
+\newcommand{\bi}{\begin{itemize}\item}
+\newcommand{\ei}{\end{itemize}}
+
+\input{../shorthand.tex} % put your own shorthand declarations in this document
+
+\graphicspath{{../../ECTA2014/fig/}}
+\DeclareGraphicsExtensions{.eps}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       PRESENTATION INFO        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author{Helga Ingimundard\'{o}ttir\\Thomas Philip Runarsson}
+\title{Evolutionary learning of weighted linear composite dispatching rules for scheduling}
+\subtitle{Case study for JSP and PFSP}
+\institute{University of Iceland}	
+\date{October, 2014}
+
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       SLIDE DEFINITIONS        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\frame{
+\frametitle{Outline}
+\tableofcontents[part=0] % part=0, sectionstyle=show/shaded
+}
+
+\section{Introduction}
+\frame{\tableofcontents[currentsection]}
+
+\frame{
+\frametitle{Motivation}
+
+\begin{block}{General Goal}
+\begin{itemize} 
+\item General goal is how to search for \emph{good} solutions for an arbitrary problem domain. 
+\item Automate the design of optimization algorithms. 
+\item Use of randomly sampled problem instances and their corresponding optimal vs. suboptimal solutions.
+\end{itemize}
+\end{block}
+}
+
+\frame{\frametitle{Case Study: JSP and PFSP}
+\begin{block}{Abstract}
+\begin{itemize}
+\item Framework for creating dispatching rules for JSP and PFSP.
+\item \alert{Linear classification} to identify good dispatches from worse ones.
+\item \alert{Robust} for higher dimensions. 
+\end{itemize}
+\end{block}
+\textbf{Keywords:} Scheduling $\bullet$ Composite dispatching rules $\bullet$ JSP  $\bullet$ PFSP $\bullet$ Evolutionary Search $\bullet$ Performance Measures $\bullet$ Scalability 
+}
+
+
+\section{Job Shop Scheduling}
+\frame{\tableofcontents[currentsection]}
+
+\frame[allowframebreaks]{
+\frametitle{Job Shop Scheduling}
+\begin{block}{JSP}
+	Simple job shop scheduling problem  is where $n$ jobs are scheduled on a set of $m$ machines, subject to constraints:
+	\begin{itemize}
+	\item each job must follow a predefined machine order,
+	\item that a machine can handle at most one job at a time.
+	\end{itemize}
+	
+	\textbf{Objective:} schedule the jobs so as to minimize the maximum completion time, i.e. makespan, $C_{\max}$.
+\end{block}
+\begin{block}{PFSP}	
+    Permutation flow shop scheduling is the same as JSP except the predefined machine order is homogeneous for all jobs.	
+\end{block}
+%\begin{itemize}
+%	\item Job $j$ has an indivisible operation time on machine $a$, $p(j,a)$, which is assumed to be integral, where $j \in\{1,..,n\}$ and $a\in\{ 1,..,m\}$. 
+%	\item Job $j$ has a specified processing order through the machines, it is a permutation vector, $\sigma_j$, of $\{1,..,m\}$, i.e. $j$ can be processed on $\sigma_j(a)$ only after it has completed on $\sigma_j(a-1)$.
+%	\begin{itemize} \item Permutation flow shop scheduling (PFSP) is when $\sigma_j$ is fixed $\forall j$. \end{itemize}
+%\end{itemize}
+\begin{block}{Problem space distributions used in experimental studies}
+\begin{table}
+{\scriptsize
+\begin{tabularx}{\columnwidth}{ll|c|C|C|l}\toprule
+name&size & $N_{\text{train}}$&$N_{\text{test}}$  & note 
+\\  \midrule
+%\multicolumn{5}{c}{Permutation flow shop problem (PFSP)} \\ \midrule
+\multirow{6}{*}{\begin{sideways}PFSP\end{sideways}}
+&$\mathcal{P}_{f.rnd}^{6\times5}$ &$6\times5$& 500&--& random \\ 
+&$\mathcal{P}_{f.rndn}^{6\times5}$&$6\times5$& 500&--& random-narrow \\ 
+&$\mathcal{P}_{f.jc}^{6\times5}$  &$6\times5$& 500&--& job-correlated \\ 
+&$\mathcal{P}_{f.rnd}^{10\times10}$ &$10\times10$&--&500&random \\ 
+&$\mathcal{P}_{f.rndn}^{10\times10}$&$10\times10$&--&500& random-narrow \\ 
+&$\mathcal{P}_{f.jc}^{10\times10}$  &$10\times10$&--&500& job-correlated \\ 
+\midrule 
+%\multicolumn{5}{c}{Job shop problem (JSP)} \\ \midrule
+\multirow{4}{*}{\begin{sideways}JSP\end{sideways}}
+&$\mathcal{P}_{j.rnd}^{6\times5}$ & $6\times5$ & 500 & -- & random \\
+&$\mathcal{P}_{j.rndn}^{6\times5}$ & $6\times5$ & 500 & -- & random-narrow \\
+&$\mathcal{P}_{j.rnd}^{10\times10}$ &$10\times10$& -- & 500 & random \\
+&$\mathcal{P}_{j.rndn}^{10\times10}$ &$10\times10$& -- & 500 & random-narrow \\ 
+\bottomrule
+\end{tabularx}
+}\end{table}
+\end{block}
+
+
+
+\begin{block}{Dispatching rules (DR) for constructing JSSP}
+\begin{itemize}
+	\item Starts with an empty schedule and adds on one job at a time. 
+	\item When a machine is free the DR inspects the waiting/available jobs and selects the job with the \alert{highest priority}. 
+	\item Complete schedule consists of $\ell=n\times m$ sequential dispatches.
+	\item At each dispatch $k$ features $\vphi(k)$ for the temporal schedule are calculated.
+	\item Performance of DR is compared with its optimal makespan, as percentage relative deviation from optimality: $\rho=\frac{C_{\max}^{DR}-C_{\max}^{opt}}{C_{\max}^{opt}}\cdot 100\%$
+\end{itemize}
+\end{block}
+\framebreak
+\begin{block}{Features for JSSP}\label{tbl:features}
+\begin{table}[t!]
+ {\scriptsize
+ \begin{center}
+  \begin{tabular}{|c|l|}
+   \hline\hline
+  $\vphi$ & Feature description \\ \hline
+  $\phi_1$ & processing time for job on machine\\
+  $\phi_2$ & start-time \\
+  $\phi_3$ & end-time \\
+  $\phi_4$ & when machine is next free \\
+  $\phi_5$ & current makespan \\
+  $\phi_6$ & work remaining \\
+  $\phi_7$ & most work remaining \\
+  $\phi_8$ & slack time for this particular machine \\
+  $\phi_9$ & slack time for all machines \\
+  $\phi_{10}$ & slack time weighted w.r.t. number of operations already assigned \\
+  $\phi_{11}$ & time job had to wait\\
+  $\phi_{12}$ & size of slot created by assignment \\
+  $\phi_{13}$ & total processing time for job \\
+ \hline\hline
+  \end{tabular}
+ \end{center}}
+\end{table}
+\end{block}
+}
+
+\frame{
+\frametitle{Job Shop Scheduling}
+\begin{example}
+	\begin{center}
+		\includegraphics[width=0.5\columnwidth]{jssp_example_nocolor}
+	\end{center}
+	A schedule being built at step $k=16$. The dashed boxes represent five different possible jobs that could be scheduled next using a DR.
+\end{example}
+}
+
+\section{Evolutionary search with CMA-ES}
+\frame{\tableofcontents[currentsection]}
+
+\frame{\frametitle{Evolutionary search}
+Instead of using logistic regression for to find the weights $\vec{w}$ for linear preference function:
+$$ h(\vphi) = \sum_{i=1}^d w_i \vphi = \inner{w}{\vphi}. $$
+a widely-used evolutionary algorithm, Covariance Matrix Adaptation Evolution Strategy (\alert{CMA-ES}), is applied directly on the desired objective function. For this study both,~~ \begin{enumerate*}[label=\itshape\alph*\upshape)]
+\item expected relative error, \alert{$\mathbb{E}\left[\rho\right]$}; and
+\item final makespan, \alert{$\mathbb{E}\left[C_{\max}\right]$}, 
+\end{enumerate*} will be considered.
+
+\begin{description}\item[Benefit] No need to collect training data beforehand.
+\item[Drawback] Computationally expensive to evaluate $\mathbb{E}\left[\cdot\right]$
+\end{description}
+
+}
+
+
+
+\section{Experiments}
+\frame{\tableofcontents[currentsection]}
+
+\frame[allowframebreaks]{\frametitle{Experiments}
+
+\begin{block}{Fitness for optimising with CMA-ES}
+\begin{columns}[T]
+    \begin{column}{.5\textwidth}
+    \begin{figure} \centering
+    \includegraphics[width=0.7\textwidth]{CMAboxplotEvoTrain}
+    \end{figure}        
+    \end{column}
+    \begin{column}{.5\textwidth}
+    Box-plot of training data for percentage relative deviation from optimality, $\rho$, when implementing the final weights obtained from CMA-ES optimisation, using both obj. functions, $\mathbb{E}\left[C_{\max}\right]$ and $\mathbb{E}\left[\rho\right]$.    
+    \end{column}
+  \end{columns}
+\end{block}
+\framebreak
+
+
+\begin{block}{Fitness for optimising with CMA-ES}
+\begin{figure} \centering
+\includegraphics[width=0.75\textwidth]{CMAfitnessEvo2}
+\end{figure}
+Fitness for minimising w.r.t. $C_{\max}$ and $\rho$, per generation of CMA-ES.
+\end{block}
+\framebreak
+
+\begin{block}{Evolution of weights of features}
+\begin{figure} \centering
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_Cmax}.eps}\quad
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_rho}.eps}
+\end{figure}
+Evolution of weights of     \hyperlink{tbl:features}{\beamergotobutton{FEATURES}} at each generation of the CMA-ES optimisation, for minimisation w.r.t. $C_{\max}$ (left) and $\rho$ (right). 
+%Note, weights are normalised such that $\norm{\vec{w}}=1$.
+\end{block}
+}
+
+\section{Summary and conclusions}
+\frame{\tableofcontents[currentsection]}
+
+\frame[allowframebreaks]{\frametitle{Summary and conclusions}
+
+\bi Introduced a framework for learning linear composite dispatch rules for scheduling. 
+\item The approaches find linear weights by  \alert{direct optimisation with CMA-ES}
+\item The methods significantly outperforms SDRs from the literature, and our previous work which was based on preference learning.
+\ei
+\begin{block}{CMA-ES optimisation}
+Benefits: 
+\bi Does not rely on optimal solutions -- although can help
+\item Scalable -- model based on $6\times5$ successfully applied to $10\times10$.
+\ei 
+Drawbacks:
+\bi Computationally expensive .
+\item Limited to linear preference function $h(\cdot)$
+\ei 
+Future Work:
+\bi Mediate evolutionary search by use of surrogate models which indirectly estimate mean expected error w.r.t. current population without a loss in performance
+\ei 
+\end{block}
+}
+
+\frame{
+\frametitle{Thank you for your attention}
+\vspace{2cm}
+\begin{center} \pause {\huge\bf Questions?} \end{center}
+\vfill
+\begin{flushright} Contact: Helga Ingimundard\'{o}ttir, \url{hei2@hi.is}\end{flushright}
+}
+
+\end{document}
