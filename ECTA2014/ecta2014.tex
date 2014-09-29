@@ -106,7 +106,7 @@ ordinarypageslogo=../hilogoname,
 \input{../shorthand.tex} % put your own shorthand declarations in this document
 
 \graphicspath{{../../ECTA2014/fig/}}
-\DeclareGraphicsExtensions{.pdf}
+\DeclareGraphicsExtensions{.eps}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %       PRESENTATION INFO        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,7 +188,7 @@ ordinarypageslogo=../hilogoname,
 \begin{tabularx}{\columnwidth}{ll|c|C|C|l}\toprule
 &name&size & $N_{\text{train}}$&$N_{\text{test}}$  & note 
 \\  \midrule
-%\multicolumn{5}{c}{Permutation flow shop problem (PFSP)} \\ \midrule
+\multicolumn{5}{c}{Permutation flow shop problem (PFSP)} \\ \midrule
 \multirow{6}{*}{\begin{sideways}PFSP\end{sideways}}
 &$\mathcal{P}_{f.rnd}^{6\times5}$ &$6\times5$& 500&--& random \\ 
 &$\mathcal{P}_{f.rndn}^{6\times5}$&$6\times5$& 500&--& random-narrow \\ 
@@ -197,7 +197,7 @@ ordinarypageslogo=../hilogoname,
 &$\mathcal{P}_{f.rndn}^{10\times10}$&$10\times10$&--&500& random-narrow \\ 
 &$\mathcal{P}_{f.jc}^{10\times10}$  &$10\times10$&--&500& job-correlated \\ 
 \midrule 
-%\multicolumn{5}{c}{Job shop problem (JSP)} \\ \midrule
+\multicolumn{5}{c}{Job shop problem (JSP)} \\ \midrule
 \multirow{4}{*}{\begin{sideways}JSP\end{sideways}}
 &$\mathcal{P}_{j.rnd}^{6\times5}$ & $6\times5$ & 500 & -- & random \\
 &$\mathcal{P}_{j.rndn}^{6\times5}$ & $6\times5$ & 500 & -- & random-narrow \\
@@ -306,8 +306,8 @@ Fitness for minimising w.r.t. $C_{\max}$ and $\rho$, per generation of CMA-ES.
 
 \begin{block}{Evolution of weights of features}
 \begin{figure} \centering
-\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_Cmax}.pdf}\quad
-\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_rho}.pdf}
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_Cmax}.eps}\quad
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_rho}.eps}
 \end{figure}
 Evolution of weights of     \hyperlink{tbl:features}{\beamergotobutton{FEATURES}} at each generation of the CMA-ES optimisation, for minimisation w.r.t. $C_{\max}$ (left) and $\rho$ (right). 
 %Note, weights are normalised such that $\norm{\vec{w}}=1$.
