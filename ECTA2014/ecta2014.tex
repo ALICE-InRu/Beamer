@@ -85,8 +85,8 @@ ordinarypageslogo=../hilogoname,
 %\usepackage[small]{caption}
 \usepackage{booktabs}
 
-\usepackage{tabularx}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+
 \usepackage{url}
 \usepackage{subfigure}
 % Use graphicx for including graphics
@@ -106,7 +106,7 @@ ordinarypageslogo=../hilogoname,
 \input{../shorthand.tex} % put your own shorthand declarations in this document
 
 \graphicspath{{../../ECTA2014/fig/}}
-\DeclareGraphicsExtensions{.eps}
+\DeclareGraphicsExtensions{.pdf}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %       PRESENTATION INFO        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,7 +186,7 @@ ordinarypageslogo=../hilogoname,
 \begin{table}
 {\scriptsize
 \begin{tabularx}{\columnwidth}{ll|c|C|C|l}\toprule
-name&size & $N_{\text{train}}$&$N_{\text{test}}$  & note 
+&name&size & $N_{\text{train}}$&$N_{\text{test}}$  & note 
 \\  \midrule
 %\multicolumn{5}{c}{Permutation flow shop problem (PFSP)} \\ \midrule
 \multirow{6}{*}{\begin{sideways}PFSP\end{sideways}}
@@ -306,8 +306,8 @@ Fitness for minimising w.r.t. $C_{\max}$ and $\rho$, per generation of CMA-ES.
 
 \begin{block}{Evolution of weights of features}
 \begin{figure} \centering
-\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_Cmax}.eps}\quad
-\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_rho}.eps}
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_Cmax}.pdf}\quad
+\includegraphics[width=0.45\textwidth]{{CMAweightsEvo.ES_rho}.pdf}
 \end{figure}
 Evolution of weights of     \hyperlink{tbl:features}{\beamergotobutton{FEATURES}} at each generation of the CMA-ES optimisation, for minimisation w.r.t. $C_{\max}$ (left) and $\rho$ (right). 
 %Note, weights are normalised such that $\norm{\vec{w}}=1$.
