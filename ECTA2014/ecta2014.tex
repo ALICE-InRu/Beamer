@@ -172,7 +172,7 @@ ordinarypageslogo=../hilogoname,
 	\item that a machine can handle at most one job at a time.
 	\end{itemize}
 	
-	\textbf{Objective:} schedule the jobs so as to minimize the maximum completion time, i.e. makespan, $C_{\max}$.
+	\textbf{Objective:} schedule the jobs so as to minimize the maximum completion time, i.e., makespan, $C_{\max}$.
 \end{block}
 \begin{block}{PFSP}	
     Permutation flow shop scheduling is the same as JSP except the predefined machine order is homogeneous for all jobs.	
@@ -318,22 +318,23 @@ Evolution of weights of     \hyperlink{tbl:features}{\beamergotobutton{FEATURES}
 \frame{\tableofcontents[currentsection]}
 
 \frame[allowframebreaks]{\frametitle{Summary and conclusions}
-
 \bi Introduced a framework for learning linear composite dispatch rules for scheduling. 
-\item The approaches find linear weights by  \alert{direct optimisation with CMA-ES}
-\item The methods significantly outperforms SDRs from the literature, and our previous work which was based on preference learning.
+\item The approach finds linear weights by  \alert{direct optimisation with CMA-ES}.
+\item The method significantly outperforms SDRs from the literature, and authors' previous work which were based on preference learning.
 \ei
 \begin{block}{CMA-ES optimisation}
 Benefits: 
-\bi Does not rely on optimal solutions -- although can help
+\bi Does not rely on optimal solutions -- although if known, they can help getting out of local minima. 
 \item Scalable -- model based on $6\times5$ successfully applied to $10\times10$.
 \ei 
 Drawbacks:
-\bi Computationally expensive .
+\bi Computationally expensive.
 \item Limited to linear preference function $h(\cdot)$
 \ei 
-Future Work:
-\bi Mediate evolutionary search by use of surrogate models which indirectly estimate mean expected error w.r.t. current population without a loss in performance
+\end{block}
+\framebreak
+\begin{block}{Future work}
+\bi Facilitate evolutionary search by use of surrogate models which indirectly estimate mean expected error w.r.t. current population without loss in performance
 \ei 
 \end{block}
 }
