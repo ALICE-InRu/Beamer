@@ -113,7 +113,7 @@ ordinarypageslogo=../hilogoname,
 \author{Helga Ingimundard\'{o}ttir\\Thomas Philip Runarsson}
 \title{Generating Training Data for Learning Linear \\ Composite Dispatching Rules for Scheduling}
 \institute{University of Iceland}	
-\date{January, 2015}
+\date{\today}
 
 
 \begin{document}
@@ -141,7 +141,8 @@ ordinarypageslogo=../hilogoname,
 \begin{block}{General Goal}
 \begin{itemize} 
 \item General goal is how to search for \emph{good} solutions for an arbitrary problem domain. 
-\item Automate the design of optimization algorithms. 
+\item Automate the design of optimization algorithms based on \alert{preference 
+learning}.
 \item Use of randomly sampled problem instances and their corresponding optimal vs. suboptimal solutions.
 \end{itemize}
 \end{block}
@@ -152,7 +153,8 @@ ordinarypageslogo=../hilogoname,
 \begin{itemize}
 \item Framework for creating dispatching rules for JSP.
 \item \alert{Linear classification} to identify good dispatches from worse ones.
-\item Generate training data both from \alert{optimal} and \alert{suboptimal} solutions, by exploring various \alert{trajectories} within the state-space.
+\item Generate training data both from \alert{optimal} and \alert{suboptimal} 
+solutions, by exploring various \alert{trajectories} within the feature-space.
 \item Sample training data using different \alert{ranking} schemes.
 \end{itemize}
 \end{block}
@@ -201,9 +203,10 @@ ordinarypageslogo=../hilogoname,
 	\item When a machine is free the DR inspects the waiting/available jobs and selects the job with the \alert{highest priority}. 
 	\item Complete schedule consists of $\ell=n\cdot m$ sequential dispatches.
 	\item At each dispatch $k$, \alert{features} $\vphi(k)$ for the temporal schedule are calculated.
-	\item Performance of DR is compared with its optimal makespan, as percentage relative deviation from optimality: $\rho=\frac{C_{\max}^{DR}-C_{\max}^{opt}}{C_{\max}^{opt}}\cdot 100\%$
 \end{itemize}
 \end{block}
+Performance of DR is compared with its optimal makespan is: 
+$$\rho=\frac{C_{\max}^{DR}-C_{\max}^{opt}}{C_{\max}^{opt}}\cdot 100\%$$
 \framebreak
 \begin{block}{Features for JSP}\label{tbl:features}
 \begin{table}[t!]
@@ -279,21 +282,24 @@ ordinarypageslogo=../hilogoname,
 	
 	\item The preference is defined by a linear function, i.e. \alert{PREF model}:
 	$$ h(\vphi) = \sum_{i=1}^d w_i \vphi = \inner{w}{\phi}. $$
-	\item Logistic regression learns the optimal parameters $\vec{w}$ by solving:
-	$$ \min_{\vec{w}}\quad \tfrac{1}{2}\inner{w}{w} + C \sum_{j=1}^{\abs{S}} \log\left(1 + e^{-y_j \inner{w}{z_j}}\right) $$ 
+	\item Logistic regression learns the optimal parameters $\vec{w}$ by 
+	solving:
+	$$ \min_{\vec{w}}\quad \tfrac{1}{2}\inner{w}{w} + C \sum_{j=1}^{\abs{S}} 
+	\log\left(1 + e^{-y_j \inner{w}{z_j}}\right) $$ 
 	\ei	
 }
 
 \frame[allowframebreaks]{\frametitle{Generating preference set $S$}
-	\begin{block}{A seperate DR for each dispatch iteration}
-		\bi At each dispatch  $k$ a number of data pairs are created
-		\bi for each of the $N_{\text{train}}$ problem instance created. \ei 
-		\item Deliberately create a separate data set for each dispatch  
-		\bi Resulting in $\ell$ linear scheduling rules for solving a $n \times m$ JSP. \ei
-		\ei 
-	\end{block}
-	Defining the size of the training set as $l'=\abs{\Phi}$, gives the size of the preference set as $\abs{S}=l=2l'$. 
-	\bi If $l$ is too large, than sampling needs to be done. \ei 
+	\bi At each dispatch  $k$, a number of data pairs are created
+	%\bi for each of the $N_{\text{train}}$ problem instance created. \ei 
+	\item Separate data set for each dispatch, i.e., 
+	total of $\ell$ models.  
+	%\bi Resulting in $\ell$ linear scheduling rules for solving a $n 
+	%\times m$ JSP. \ei
+	\ei 
+	%Defining the size of the training set as $l'=\abs{\Phi}$, gives the size 
+	%of the preference set as $l=\abs{S}=2l'$. 
+	%\bi If $l$ is too large, than sampling needs to be done. \ei 
 	
 	\begin{block}{Previous sampling approach  }
 		The strategy was to follow some \alert{single optimal job} $j\in\mathcal{O}^{(k)}$, thus creating $\abs{\mathcal{O}^{(k)}}\cdot\abs{\mathcal{S}^{(k)}}$ feature pairs at each dispatch $k$, resulting in a training size of: 
@@ -301,7 +307,10 @@ ordinarypageslogo=../hilogoname,
 		l' = \sum_{q=1}^{N_{\text{train}}}\left(\sum_{k=1}^\ell \abs{\mathcal{O}^{(k)}}\cdot\abs{\mathcal{S}^{(k)}}\right) \nonumber
 		\end{equation}
 	\end{block}
-	For the data distribution considered there, this simple sampling was sufficient for a favourable outcome. However for a considerably harder data distribution this strategy did not work well.
+	%For the data distribution considered there, this simple sampling was 
+	%sufficient for a favourable outcome. However for a considerably harder 
+	%data 
+	%distribution this strategy did not work well.
 	
 	% \begin{quote} Motivation: a brute force approach to investigate the feasibility of finding optimal weights $\vec{w}$.\end{quote} 
 	
@@ -342,11 +351,8 @@ ordinarypageslogo=../hilogoname,
 \frame{\frametitle{Evolutionary search}\label{CMA-ES}
 	Instead of using logistic regression for to find the weights $\vec{w}$ for linear preference function:
 	$$ h(\vphi) = \sum_{i=1}^d w_i \vphi = \inner{w}{\vphi}. $$
-	a widely-used evolutionary algorithm, Covariance Matrix Adaptation Evolution Strategy (\alert{CMA-ES}), is applied directly on the %desired 
-	objective function. %For this study both,~~ \begin{enumerate*}[label=\itshape\alph*\upshape)]
-	%\item expected relative error, \alert{$\mathbb{E}\left[\rho\right]$}; and
-	%\item final makespan, \alert{$\mathbb{E}\left[C_{\max}\right]$}, 
-	%\end{enumerate*} will be considered.
+	Covariance Matrix Adaptation Evolution Strategy (\alert{CMA-ES}), is 
+	applied directly on the objective function. 
 	
 	\begin{description}\item[Benefit] No need to collect training data beforehand.
 		\item[Drawback] Computationally expensive to evaluate $\mathbb{E}\left[C_{\max}\right]$
@@ -371,11 +377,15 @@ ordinarypageslogo=../hilogoname,
 \end{figure}
 \vspace{-12pt}
 \end{block}
-\framebreak
 \begin{block}{Trajectory sampling strategies}
-\bi Learning preferences from good scheduling rules can give favourable results, e.g. $\Phi^{cma}$ and $\Phi^{mwr}$.
-\item Tracking only optimal paths (\alert{$\Phi^{opt}$}) yield a generally lower mean relative error -- although there was no statistical difference with $\Phi^{rnd}$, implying the model has diverged from the learned optimal features set and is inept to determine good dispatches from that point onward.
-\item For $\mathcal{P}_{j.rnd}^{6\times5}$ the best model was based on \alert{$\Phi^{all}$}, where the suboptimal trajectories aid $\Phi^{opt}$ by adding a greater variety of preference pairs for getting out of local minima.
+\bi Learning preferences from good scheduling rules can be favourable.
+\item Tracking only optimal paths (\alert{$\Phi^{opt}$}) yield a generally 
+lower mean relative error -- although no statistical difference with 
+$\Phi^{rnd}$ %implying the model has diverged from the learned optimal features 
+%set and is inept to determine good dispatches from that point onward.
+\item For $\mathcal{P}_{j.rnd}^{6\times5}$ the best model was based on 
+\alert{$\Phi^{all}$} , where the suboptimal trajectories aid $\Phi^{opt}$ by 
+adding a greater variety of preference pairs.
 \ei 
 \end{block}
 \begin{block}{Results for ranking schemes}
@@ -384,21 +394,44 @@ ordinarypageslogo=../hilogoname,
 \end{block}
 }
 
-\section{Summary and conclusions}
+\section{Summary and Future Work}
 \frame{\tableofcontents[currentsection]}
 
-\frame[allowframebreaks]{\frametitle{Summary and conclusions}
-\bi Introduced a framework for learning linear composite dispatch rules for scheduling. 
-\item The approach is based on preference learning and its success is highly dependent on the preference pairs introduced to the system, i.e., the trajectories explored through the state-space. Here, optimal and suboptimal trajectories are of value.
-\item By partial subsequent ranking scheme it's possible to reduce the preference set without loss of performance. 
+\frame[allowframebreaks]{\frametitle{Summary and future work}
+\bi Introduced a framework for learning linear composite dispatch rules for 
+scheduling based on preference learning. 
+\item By partial subsequent ranking scheme it's possible to reduce the 
+preference set without loss of performance. 
+\item Success is highly dependent on the preference pairs introduced to the 
+system, i.e., the trajectories explored through the feature-space. 
+\item It is not obvious how to go about collecting training data.
+\ei \framebreak
+\bi Learning optimal trajectories predominant in  literature. 
+\item In sequential decision making, all future observations are dependent on 
+previous operations, so compound effect of errors can be dire.
+\item Study showed $\Phi^{opt}$ can result in insufficient knowledge of 
+features.
+\item Learning from suboptimal schedules can improve the model when 
+PREF$^{opt}$ has diverged too far from $\Phi^{opt}$.
+\item Limitations in linear approximation function to capture the complex 
+dynamics incorporated in optimal trajectories.
 \ei
-\begin{block}{Future work}
-\bi Instead of creating preference set based on collecting trajectories based on arbitrary dispatching rules (or models), it's worthwhile to continue with $PREF^{opt}$ model and collect preference set following its learned policy and use that to create a new model similar to $\Phi^{all}$. 
-\item Namely use the model to update itself -- also known as \alert{imitation learning}.
-\item 
-Preliminary experiments have shown that a $PREF^{opt}$ with 14.07\% mean relative error can be improved to 8.52\% with only one unsupervised iteration, or 9.98\% if iteration is supervised.\footnote{Supervised set-up: 50\% chance $PREF^{opt}$ used, 50\% optimal move chosen.}
-\ei
-\end{block}
+
+%\begin{block}{Future work}
+%\bi Instead of creating preference set based on collecting trajectories based 
+%on arbitrary dispatching rules (or models), it's worthwhile to continue with 
+%$PREF^{opt}$ model and collect preference set following its learned policy and 
+%use that to create a new model similar to $\Phi^{all}$. 
+%\item Namely use the model to update itself -- also known as \alert{imitation 
+%learning}.
+%\item 
+%Preliminary experiments have shown that a $PREF^{opt}$ with 14.07\% mean 
+%relative error can be improved to 8.52\% with only one unsupervised iteration, 
+%or 9.98\% if iteration is supervised.\footnote{Supervised set-up: 50\% chance 
+%$PREF^{opt}$ used, 50\% optimal move chosen.}
+%\ei
+%\end{block}
+
 }
 
 \frame{
